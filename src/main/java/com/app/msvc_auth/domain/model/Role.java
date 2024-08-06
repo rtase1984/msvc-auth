@@ -3,6 +3,7 @@ package com.app.msvc_auth.domain.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Objects;
 import java.util.Set;
@@ -14,12 +15,17 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "roles")
-public class Role {
+public abstract  class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
+
+    @Override
+    public String getAuthority() {
+        return this.name;
+    }
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
